@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des intérimaires{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Gestion des intérimaires</h1>
+
+        <table class="table">
+            <th scope="col">#</th>
+            <th scope="col">Nom</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Code postal</th>
+            <th scope="col">Ville</th>
+        {% for interim in interims %}
+            <tr>
+                <td scope="row">{{ interim.id }}</td>
+                <td>{{ interim.name }} {{ interim.surname }}</td>
+                <td>{{ interim.mail }}</td>
+                <td>{{ interim.zipCode }}</td>
+                <td>{{ interim.city }}</td>
+            </tr>
+        {% endfor %}
+
+        </table>
+</div>
+{% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\MissionStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,16 +18,6 @@ class Mission
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $interimId;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $contractId;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $rating;
@@ -36,35 +27,22 @@ class Mission
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Interim", inversedBy="mission")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $interim;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Contract", inversedBy="mission", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $contract;
+
     public function getId()
     {
         return $this->id;
     }
-
-    public function getInterimId(): ?int
-    {
-        return $this->interimId;
-    }
-
-    public function setInterimId(int $interimId): self
-    {
-        $this->interimId = $interimId;
-
-        return $this;
-    }
-
-    public function getContractId(): ?int
-    {
-        return $this->contractId;
-    }
-
-    public function setContractId(int $contractId): self
-    {
-        $this->contractId = $contractId;
-
-        return $this;
-    }
-
     public function getRating(): ?int
     {
         return $this->rating;
@@ -84,7 +62,35 @@ class Mission
 
     public function setStatus(string $status): self
     {
+        if (!in_array($status, MissionStatusEnum::getAvailableStatus())) {
+            throw new \InvalidArgumentException("Invalid status");
+        }
+
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getInterim(): ?Interim
+    {
+        return $this->interim;
+    }
+
+    public function setInterim(?Interim $interim): self
+    {
+        $this->interim = $interim;
+
+        return $this;
+    }
+
+    public function getContract(): ?Contract
+    {
+        return $this->contract;
+    }
+
+    public function setContract(Contract $contract): self
+    {
+        $this->contract = $contract;
 
         return $this;
     }

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,7 +34,7 @@ class Interim
     private $mail;
 
     /**
-     * @ORM\Column(type="string", length=5, nullable=true)
+     * @ORM\Column(type="string", length=5)
      */
     private $zipCode;
 
@@ -40,6 +42,26 @@ class Interim
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $city;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Contract", mappedBy="interim", orphanRemoval=true)
+     */
+    private $contract;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Mission", mappedBy="interim", orphanRemoval=true)
+     */
+    private $mission;
+
+    public function __construct()
+    {
+        $this->contract = new ArrayCollection();
+        $this->mission = new ArrayCollection();
+    }
+
+    function __toString() {
+        return sprintf("%s %s", $this->name, $this->surname);
+    }
 
     public function getId()
     {
@@ -102,6 +124,68 @@ class Interim
     public function setCity(?string $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Contract[]
+     */
+    public function getContract(): Collection
+    {
+        return $this->contract;
+    }
+
+    public function addContract(Contract $contract): self
+    {
+        if (!$this->contract->contains($contract)) {
+            $this->contract[] = $contract;
+            $contract->setInterim($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContract(Contract $contract): self
+    {
+        if ($this->contract->contains($contract)) {
+            $this->contract->removeElement($contract);
+            // set the owning side to null (unless already changed)
+            if ($contract->getInterim() === $this) {
+                $contract->setInterim(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Mission[]
+     */
+    public function getMission(): Collection
+    {
+        return $this->mission;
+    }
+
+    public function addMission(Mission $mission): self
+    {
+        if (!$this->mission->contains($mission)) {
+            $this->mission[] = $mission;
+            $mission->setInterim($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMission(Mission $mission): self
+    {
+        if ($this->mission->contains($mission)) {
+            $this->mission->removeElement($mission);
+            // set the owning side to null (unless already changed)
+            if ($mission->getInterim() === $this) {
+                $mission->setInterim(null);
+            }
+        }
 
         return $this;
     }

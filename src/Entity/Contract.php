@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use App\Enum\ContractStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ContractRepository")
@@ -17,40 +19,39 @@ class Contract
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $interimId;
-
-    /**
+     * @Assert\NotBlank()
+     * @Assert\Type("\DateTime")
      * @ORM\Column(type="datetime")
      */
     private $dateStart;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Type("\DateTime")
      * @ORM\Column(type="datetime")
      */
     private $dateEnd;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255, columnDefinition="enum('waiting', 'progress', 'finished')")
      */
     private $status;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Interim", inversedBy="contract")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $interim;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Mission", mappedBy="contract", cascade={"persist", "remove"})
+     */
+    private $mission;
 
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getInterimId(): ?int
-    {
-        return $this->interimId;
-    }
-
-    public function setInterimId(int $interimId): self
-    {
-        $this->interimId = $interimId;
-
-        return $this;
     }
 
     public function getDateStart(): ?\DateTimeInterface
@@ -84,7 +85,40 @@ class Contract
 
     public function setStatus(string $status): self
     {
+        if (!in_array($status, ContractStatusEnum::getAvailableStatus())) {
+            throw new \InvalidArgumentException("Invalid status");
+        }
+
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getInterim(): ?Interim
+    {
+        return $this->interim;
+    }
+
+    public function setInterim(?Interim $interim): self
+    {
+        $this->interim = $interim;
+
+        return $this;
+    }
+
+    public function getMission(): ?Mission
+    {
+        return $this->mission;
+    }
+
+    public function setMission(Mission $mission): self
+    {
+        $this->mission = $mission;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $mission->getContract()) {
+            $mission->setContract($this);
+        }
 
         return $this;
     }
