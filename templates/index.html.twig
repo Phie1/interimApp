@@ -3,17 +3,15 @@
 {% block title %}Interim App{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
 <div class="example-wrapper">
     <h1>Bienvenue sur Interim App</h1>
 
     <ul>
         <li><a href="{{ path('interim') }}">Gestion des intérimaires</a></li>
-        <li><a href="{{ path('contract')}}">Gestion des contrats</a></li>
+        <li><a href="{{ path('contract') }}">Gestion des contrats</a></li>
+        <li><a href="{{ path('mission') }}">Gestion des suivis de mission</a></li>
+        <li><a href="{{ path('stats') }}">Statistiques des contrats d'intérim</a></li>
     </ul>
 </div>
 {% endblock %}

@@ -3,14 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Contract;
-use App\Entity\Interim;
-use App\Enum\ContractStatusEnum;
 use App\Form\ContractType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -42,7 +35,7 @@ class ContractController extends Controller
     }
 
     /**
-     * @Route("/contract/new", name="new")
+     * @Route("/contract/new", name="contract/new")
      */
     public function new(Request $request)
     {
@@ -65,5 +58,49 @@ class ContractController extends Controller
         return $this->render('contract/new.html.twig', array(
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * @Route("/contract/update/{contract}", name="contract/update")
+     * @param Request $request
+     * @param $contract
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function update(Request $request, $contract)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $contract = $em->getRepository(Contract::class)->find($contract);
+        $form = $this->createForm(ContractType::class, $contract);
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $contract = $form->getData();
+
+
+            $em->persist($contract);
+            $em->flush();
+            return $this->redirectToRoute('contract');
+        }
+
+        return $this->render('contract/new.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * @Route("/contract/delete/{contract}", name="contract/delete")
+     * @param $contract
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function delete($contract)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $contract = $em->getRepository(Contract::class)->find($contract);
+        $em->remove($contract);
+        $em->flush();
+
+        return $this->redirectToRoute('contract');
     }
 }

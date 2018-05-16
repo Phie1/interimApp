@@ -49,6 +49,13 @@ class Contract
      */
     private $mission;
 
+    function __toString() {
+        setlocale (LC_TIME, 'fr_FR.utf8','fra');
+        $frenchDateStart = strftime("%d %B %Y", strtotime($this->dateStart->format("d-M-Y")));
+        $frenchDateEnd = strftime("%d %B %Y", strtotime($this->dateEnd->format("d-M-Y")));
+        return sprintf("%s %s / %s - %s", $this->getInterim()->getName(), $this->getInterim()->getSurname(), $frenchDateStart, $frenchDateEnd);
+    }
+
     public function getId()
     {
         return $this->id;
@@ -73,6 +80,10 @@ class Contract
 
     public function setDateEnd(\DateTimeInterface $dateEnd): self
     {
+        if($dateEnd < $this->dateStart) {
+            throw new \InvalidArgumentException("La date de fin ne peut être inférieur à la date de début");
+        }
+
         $this->dateEnd = $dateEnd;
 
         return $this;
@@ -86,7 +97,7 @@ class Contract
     public function setStatus(string $status): self
     {
         if (!in_array($status, ContractStatusEnum::getAvailableStatus())) {
-            throw new \InvalidArgumentException("Invalid status");
+            throw new \InvalidArgumentException("Statut invalide");
         }
 
         $this->status = $status;

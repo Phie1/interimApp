@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Gestion d'un contrat{% endblock %}
+{% block title %}Gestion d'un suivi de mission{% endblock %}
 
 {% block body %}
 
 <div class="example-wrapper">
-    <a href="{{ path('contract') }}" class="btn btn-primary" role="button">Retour</a>
-    <h1>Gestion d'un contrat</h1>
+    <a href="{{ path('mission') }}" class="btn btn-primary" role="button">Retour</a>
+    <h1>Gestion d'un suivi de mission</h1>
 
 
     {{ form_start(form) }}
@@ -15,9 +15,11 @@
         {{ form_errors(form.interim) }}
         {{ form_label(form.interim) }} : {{ form_widget(form.interim) }}
         <br/>
-        {{ form_row(form.dateStart) }}
+        {{ form_errors(form.contract) }}
+        {{ form_label(form.contract) }} : {{ form_widget(form.contract) }}
         <br/>
-        {{ form_row(form.dateEnd) }}
+        {{ form_errors(form.rating) }}
+        {{ form_label(form.rating) }} : {{ form_widget(form.rating) }}
         <br/>
         {{ form_errors(form.status) }}
         {{ form_label(form.status) }} : {{ form_widget(form.status) }}

@@ -3,15 +3,12 @@
 {% block title %}Gestion des contrats{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-</style>
 
 <div class="example-wrapper">
     <h1>Gestion des contrats</h1>
 
     <div id="actions" style="margin: 10px;">
-        <a href="{{ path('new') }}" class="btn btn-primary" role="button"   >Nouveau contrat</a>
+        <a href="{{ path('contract/new') }}" class="btn btn-primary" role="button">Nouveau contrat</a>
     </div>
 
     <table class="table">
@@ -29,8 +26,8 @@
                 <td>{{ contract.dateEnd | date('d/m/Y') }}</td>
                 <td>{{ contract.status }}</td>
                 <td>
-                    <button type="button" class="btn btn-default">Modifier</button>
-                    <button type="button" class="btn btn-default">Supprimer</button>
+                    <a href="{{ path('contract/update', {'contract' : contract.id}) }}" class="btn btn-primary" role="button">Modifier</a>
+                    <a href="{{ path('contract/delete', {'contract' : contract.id}) }}" class="btn btn-primary" role="button">Supprimer</a>
                 </td>
             </tr>
         {% endfor %}

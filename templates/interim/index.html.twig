@@ -3,14 +3,16 @@
 {% block title %}Gestion des intérimaires{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-</style>
 
 <div class="example-wrapper">
     <h1>Gestion des intérimaires</h1>
 
-        <table class="table">
+    <div id="actions" style="margin: 10px;">
+        <a href="{{ path('interim/new') }}" class="btn btn-primary" role="button"   >Nouvel intérimaire</a>
+    </div>
+
+
+    <table class="table">
             <th scope="col">#</th>
             <th scope="col">Nom</th>
             <th scope="col">E-mail</th>

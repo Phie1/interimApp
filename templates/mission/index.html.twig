@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des suivis de mission{% endblock %}
+
+{% block body %}
+
+
+<div class="example-wrapper">
+    <h1>Gestion des suivis de mission</h1>
+
+    <div id="actions" style="margin: 10px;">
+        <a href="{{ path('mission/new') }}" class="btn btn-primary" role="button">Nouveau suivi de mission</a>
+    </div>
+
+    <table class="table table-sm">
+        <th scope="col">#</th>
+        <th scope="col">Intérimaire</th>
+        <th scope="col">Contrat</th>
+        <th scope="col">Note</th>
+        <th scope="col">Statut</th>
+        <th scope="col">Actions</th>
+        {% for mission in missions %}
+            <tr>
+                <td scope="row">{{ mission.id }}</td>
+                <td>{{ mission.interim.name }} {{ mission.interim.surname }}</td>
+                <td>{{ mission.contract}}</td>
+                <td>{{ mission.rating }}/10</td>
+                <td>{{ mission.status }}</td>
+                <td>
+                    <a href="{{ path('mission/update', {'mission' : mission.id}) }}" class="btn btn-primary" role="button">Modifier</a>
+                    <a href="{{ path('mission/delete', {'mission' : mission.id}) }}" class="btn btn-primary" role="button">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+
+    </table>
+</div>
+{% endblock %}

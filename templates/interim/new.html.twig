@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion d'un intérimaire{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+    <a href="{{ path('interim') }}" class="btn btn-primary" role="button">Retour</a>
+    <h1>Gestion d'un intérimaire</h1>
+
+
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {{ form_errors(form.name) }}
+        {{ form_label(form.name) }} : {{ form_widget(form.name) }}
+        <br/>
+        {{ form_errors(form.surname) }}
+        {{ form_label(form.surname) }} : {{ form_widget(form.surname) }}
+        <br/>
+        {{ form_errors(form.mail) }}
+        {{ form_label(form.mail) }} : {{ form_widget(form.mail) }}
+        <br/>
+        {{ form_errors(form.zipCode) }}
+        {{ form_label(form.zipCode) }} : {{ form_widget(form.zipCode) }}
+        <br/>
+        {{ form_errors(form.city) }}
+        {{ form_label(form.city) }} : {{ form_widget(form.city) }}
+        <br/>
+        {{ form_row(form.save) }}
+    {{ form_end(form) }}
+</div>
+{% endblock %}

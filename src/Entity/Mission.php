@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\MissionStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MissionRepository")
@@ -39,6 +41,19 @@ class Mission
      */
     private $contract;
 
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        if ($this->contract->getInterim() != $this->interim) {
+            $context->buildViolation("Le contrat selectionné n'appartient pas à cet intérimaire")
+                ->atPath('contract')
+                ->addViolation();
+        }
+    }
+
     public function getId()
     {
         return $this->id;
@@ -63,7 +78,7 @@ class Mission
     public function setStatus(string $status): self
     {
         if (!in_array($status, MissionStatusEnum::getAvailableStatus())) {
-            throw new \InvalidArgumentException("Invalid status");
+            throw new \InvalidArgumentException("Statut invalide");
         }
 
         $this->status = $status;
@@ -90,6 +105,7 @@ class Mission
 
     public function setContract(Contract $contract): self
     {
+
         $this->contract = $contract;
 
         return $this;

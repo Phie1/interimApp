@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\MissionStatusEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -87,7 +88,7 @@ class Interim
 
     public function setSurname(string $surname): self
     {
-        $this->surname = $surname;
+        $this->surname = strtoupper($surname);
 
         return $this;
     }

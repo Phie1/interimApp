@@ -4,11 +4,14 @@
         <meta charset="UTF-8">
         <title>{% block title %}Interim App{% endblock %}</title>
         {% block stylesheets %}
-            {#<link rel="stylesheet" href="{{ asset('build/scss/app.css') }}">#}
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
         {% endblock %}
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+        <style>
+            .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        </style>
     </head>
     <body>
         {% block header %}
@@ -23,7 +26,8 @@
                             <a class="nav-item nav-link active" href="{{ path('homepage') }}">Accueil <span class="sr-only">(current)</span></a>
                             <a class="nav-item nav-link" href="{{ path('interim') }}">Intérimaires</a>
                             <a class="nav-item nav-link" href="{{ path('contract') }}">Contrats</a>
-                            <a class="nav-item nav-link disabled" href="#">Missions</a>
+                            <a class="nav-item nav-link" href="{{ path('mission') }}">Suivis de mission</a>
+                            <a class="nav-item nav-link" href="{{ path('stats') }}">Statistiques</a>
                         </div>
                     </div>
                 </nav>
@@ -33,9 +37,6 @@
         {% block body %}{% endblock %}
 
         {% block javascripts %}
-            <script src="{{ asset('build/manifest.js') }}"></script>
-            <script src="{{ asset('build/js/common.js') }}"></script>
-            <script src="{{ asset('build/js/app.js') }}"></script>
         {% endblock %}
     </body>
 </html>
