@@ -57,6 +57,50 @@ class InterimController extends Controller
         ));
     }
 
+    /**
+     * @Route("/interim/update/{interim}", name="interim/update")
+     * @param Request $request
+     * @param $interim
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function update(Request $request, $interim)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $interim = $em->getRepository(Interim::class)->find($interim);
+        $form = $this->createForm(InterimType::class, $interim);
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $interim = $form->getData();
+
+
+            $em->persist($interim);
+            $em->flush();
+            return $this->redirectToRoute('interim');
+        }
+
+        return $this->render('interim/new.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * @Route("/interim/delete/{interim}", name="interim/delete")
+     * @param $interim
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function delete($interim)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $interim = $em->getRepository(Interim::class)->find($interim);
+        $em->remove($interim);
+        $em->flush();
+
+        return $this->redirectToRoute('interim');
+    }
+
     /**     *
      * @Route("/interim/search", name="interim_search")
      * @Method("POST")
