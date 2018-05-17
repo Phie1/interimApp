@@ -14,6 +14,7 @@
 
         {{ form_errors(form.interim) }}
         {{ form_label(form.interim) }} : {{ form_widget(form.interim) }}
+        <div id="match"></div>
         <br/>
         {{ form_row(form.dateStart) }}
         <br/>
@@ -25,4 +26,38 @@
         {{ form_row(form.save) }}
     {{ form_end(form) }}
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            $("#contract_interim").on('keyup', function() {
+                var input = $(this).val();
+                if ( input.length >= 2 ) {
+                    $('#match').html('Chargement...');
+                    var data = {input: input};
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('interim_search') }}",
+                        data: data,
+                        dataType: 'json',
+                        timeout: 3000,
+                        success: function(response){
+                            $('#match').html(response.interimList);
+                            $('#matchList li').on('click', function() {
+                                $('#contract_interim').val($(this).text());
+                                $('#match').text('');
+                            });
+                        },
+                        error: function() {
+                            $('#match').text('Erreur durant la recherche');
+                        }
+                    });
+                } else {
+                    $('#match').text('');
+                }
+            });
+        });
+</script>
 {% endblock %}

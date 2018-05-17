@@ -28,7 +28,7 @@ class StatsController extends Controller
             $data = $form->getData();
 
             $repository = $this->getDoctrine()->getRepository(Contract::class);
-            $contracts = $repository->findByDate($data['dateStart'], $data['dateEnd']);
+            $contracts = $repository->findBetweenDates($data['dateStart'], $data['dateEnd']);
 
             $response = new StreamedResponse();
             $response->setCallback(function() use ($contracts) {

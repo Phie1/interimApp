@@ -29,16 +29,13 @@ class CloseContractCommand extends Command
 
     protected function configure()
     {
-        $this
-            // the name of the command (the part after "bin/console")
-            ->setName('app:close-contract')
+        $this->setName('app:close-contract')
             ->setDescription('Clôture les contrats dont la date de fin a été atteinte.');
     }
 
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        //$em = $this->getDoctrine()->getManager();
         $expiredContracts = $this->em->getRepository(Contract::class)->findAfterDateEnd(date("Y-m-d H:i:s"));
         foreach ($expiredContracts as $contract) {
             $contract->setStatus(ContractStatusEnum::STATUS_FINISHED);

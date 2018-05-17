@@ -19,6 +19,17 @@ class InterimRepository extends ServiceEntityRepository
         parent::__construct($registry, Interim::class);
     }
 
+    public function findByLetters($string){
+        $qb = $this->createQueryBuilder('i')
+            ->andWhere('i.name LIKE :word')
+            ->setParameter('word', '%'.$string.'%')
+            ->orWhere('i.surname LIKE :word')
+            ->setParameter('word', '%'.$string.'%')
+            ->getQuery();
+
+        return $qb->execute();
+    }
+
 //    /**
 //     * @return Interim[] Returns an array of Interim objects
 //     */

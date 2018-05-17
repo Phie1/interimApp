@@ -56,6 +56,8 @@ class ContractRepository extends ServiceEntityRepository
         return $qb->execute();
     }
 
+
+
 //    /**
 //     * @return Contract[] Returns an array of Contract objects
 //     */
